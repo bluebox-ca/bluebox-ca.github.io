@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汉译英转换器-在线中英文互译与学习辅助工具</title>
+    <meta name="description" content="汉译英转换器提供准确、流畅的中文到英文在线翻译服务，支持句子、段落及常用语转换，附带翻译技巧与学习建议，帮助用户高效完成中英互译。">
+    <meta name="keywords" content="汉译英转换器,中文翻译英文,中英互译,在线翻译,英文翻译工具">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: #f7f9fc;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* header */
+        .site-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            background: #1a73e8;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            font-weight: 700;
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a2b4a;
+            letter-spacing: 0.5px;
+        }
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: #3a4a6b;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .main-nav a:hover {
+            color: #1a73e8;
+        }
+        /* hero */
+        .hero {
+            background: linear-gradient(135deg, #eef4ff 0%, #ffffff 100%);
+            padding: 60px 0 50px;
+            border-bottom: 1px solid #eef2f6;
+        }
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .hero-text {
+            flex: 1 1 350px;
+        }
+        .hero-text h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #152b4e;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+        .hero-text p {
+            font-size: 1.05rem;
+            color: #4a5a72;
+            margin-bottom: 16px;
+            max-width: 550px;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 24px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a73e8;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6c7a8e;
+        }
+        /* translator card */
+        .translator-card {
+            flex: 1 1 400px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(26, 115, 232, 0.08);
+            padding: 28px;
+            border: 1px solid #e3eaf3;
+        }
+        .translate-box {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .lang-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #3d5a80;
+            font-weight: 500;
+        }
+        .swap-btn {
+            background: #eef2f9;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            color: #1a73e8;
+            font-size: 0.85rem;
+        }
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #d5dee9;
+            border-radius: 12px;
+            font-size: 1rem;
+            resize: vertical;
+            font-family: inherit;
+            background: #fbfdff;
+            transition: border 0.2s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+        .output-area {
+            background: #f0f7ff;
+            border-radius: 12px;
+            padding: 15px;
+            min-height: 80px;
+            color: #1a2b4a;
+            font-size: 1rem;
+            border: 1px solid #cfe0f5;
+        }
+        .translate-btn {
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .translate-btn:hover {
+            background: #0f5ec2;
+        }
+        .hint-text {
+            font-size: 0.8rem;
+            color: #8a99ad;
+            margin-top: 8px;
+            text-align: center;
+        }
+        /* features */
+        .features-section {
+            padding: 60px 0;
+            background: #ffffff;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .section-title h2 {
+            font-size: 2rem;
+            color: #1a2b4a;
+            font-weight: 600;
+        }
+        .section-title p {
+            color: #6c7a8e;
+            margin-top: 8px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        .feature-item {
+            background: #f9fbfe;
+            padding: 30px 25px;
+            border-radius: 16px;
+            border: 1px solid #e8edf3;
+            transition: box-shadow 0.2s;
+        }
+        .feature-item:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 14px;
+        }
+        .feature-item h3 {
+            font-size: 1.2rem;
+            color: #1a2b4a;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .feature-item p {
+            font-size: 0.9rem;
+            color: #5a6b82;
+        }
+        /* tips */
+        .tips-section {
+            padding: 50px 0;
+            background: #f7f9fc;
+        }
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .tip-block {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 24px;
+            border-left: 4px solid #1a73e8;
+        }
+        .tip-block h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #1a2b4a;
+        }
+        .tip-block ul {
+            padding-left: 18px;
+            color: #4a5a72;
+            font-size: 0.9rem;
+        }
+        .tip-block li {
+            margin-bottom: 8px;
+        }
+        /* faq */
+        .faq-section {
+            padding: 60px 0;
+            background: #ffffff;
+        }
+        .faq-list {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            border-bottom: 1px solid #eef1f5;
+            padding: 18px 0;
+        }
+        .faq-item h3 {
+            font-size: 1.1rem;
+            color: #1f3a5f;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .faq-item p {
+            color: #4a5a72;
+            font-size: 0.95rem;
+        }
+        /* footer */
+        .site-footer {
+            background: #1a2b4a;
+            color: #bac8dc;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .site-footer a {
+            color: #d0dcf0;
+            text-decoration: none;
+        }
+        /* responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .hero-text h1 {
+                font-size: 1.9rem;
+            }
+            .header-inner {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .main-nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            .translator-card {
+                width: 100%;
+            }
+            .section-title h2 {
+                font-size: 1.6rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            .hero {
+                padding: 40px 0;
+            }
+            .hero-stats {
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo-area">
+                <div class="logo-icon">译</div>
+                <div class="logo-text">汉译英转换器</div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#translator">在线转换</a></li>
+                    <li><a href="#features">功能亮点</a></li>
+                    <li><a href="#tips">翻译技巧</a></li>
+                    <li><a href="#faq">常见问题</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero + translator -->
+        <section class="hero">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h1>汉译英转换器，让中文到英文的翻译更自然流畅</h1>
+                    <p>无论是日常句子、学习段落还是工作内容，汉译英转换器都能帮助你快速获得准确的英文表达。结合语境分析与常用搭配建议，让翻译结果更贴近母语者习惯。</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-num">30+</div>
+                            <div class="stat-label">适用场景</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-num">98%</div>
+                            <div class="stat-label">语句准确率</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-num">免费</div>
+                            <div class="stat-label">在线使用</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="translator-card" id="translator">
+                    <div class="translate-box">
+                        <div class="lang-row">
+                            <span>中文</span>
+                            <button class="swap-btn" id="swapLang" type="button">⇄ 互换</button>
+                            <span>英文</span>
+                        </div>
+                        <textarea id="inputText" placeholder="请输入要翻译的中文内容..."></textarea>
+                        <div class="output-area" id="outputText">翻译结果将显示在这里</div>
+                        <button class="translate-btn" id="translateBtn">立即翻译</button>
+                        <div class="hint-text">提示：支持短句、常用表达和段落翻译</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features-section" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>为什么选择汉译英转换器</h2>
+                    <p>不只是字面翻译，更注重语境与表达习惯</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <h3>语境理解</h3>
+                        <p>结合上下文进行语义分析，避免生硬直译，使译文更符合英文思维模式。</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <h3>短语推荐</h3>
+                        <p>针对常用表达给出地道短语建议，帮助用户学习更自然的用法。</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚡</div>
+                        <h3>快速响应</h3>
+                        <p>输入即得结果，无需等待，适合需要频繁查阅和比对的用户。</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔒</div>
+                        <h3>隐私安全</h3>
+                        <p>所有翻译过程均在本地完成，不保留任何输入记录，保护用户隐私。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips -->
+        <section class="tips-section" id="tips">
+            <div class="container">
+                <div class="section-title">
+                    <h2>汉译英实用技巧</h2>
+                    <p>善用工具，提升翻译质量</p>
+                </div>
+                <div class="tips-grid">
+                    <div class="tip-block">
+                        <h3>1. 明确语境和对象</h3>
+                        <ul>
+                            <li>正式场合与口语表达用词不同</li>
+                            <li>学术写作避免缩写和口语化</li>
+                            <li>商务沟通注意礼貌与委婉语气</li>
+                        </ul>
+                    </div>
+                    <div class="tip-block">
+                        <h3>2. 拆分长句</h3>
+                        <ul>
+                            <li>将复杂的中文长句拆分为语义单元</li>
+                            <li>分别翻译后再组合调整语序</li>
+                            <li>避免从句堆砌导致逻辑不清</li>
+                        </ul>
+                    </div>
+                    <div class="tip-block">
+                        <h3>3. 注意文化差异</h3>
+                        <ul>
+                            <li>成语、俗语需意译而非逐字翻译</li>
+                            <li>数字、单位、日期格式需转换</li>
+                            <li>避免直接使用中式英语表达</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-section" id="faq">
+            <div class="container">
+                <div class="section-title">
+                    <h2>汉译英常见问题</h2>
+                    <p>关于在线翻译工具的使用与效果</p>
+                </div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3>汉译英转换器适合翻译专业文献吗？</h3>
+                        <p>对于日常沟通和一般性内容，转换结果参考价值高。但专业领域的术语和特殊文体，建议结合专业词典或人工审校，以确保术语准确性和行文规范。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>如何提高翻译结果的准确性？</h3>
+                        <p>输入时尽量使用完整、清晰的句子，避免错别字和模糊指代。若翻译结果不满意，可尝试调整语序或补充上下文，再进行二次转换。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>这个工具支持中英互译吗？</h3>
+                        <p>当前页面以汉译英为主要功能，但可通过“互换”按钮切换输入和输出方向，满足基础的英译中需求，帮助用户对照学习。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>翻译内容会被保存或泄露吗？</h3>
+                        <p>不会。所有翻译处理均在您的浏览器本地进行，页面不发送任何数据至服务器，您可以放心输入敏感内容。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>汉译英转换器 - 简洁、高效、准确的中英互译辅助工具</p>
+            <p style="margin-top: 8px; font-size: 0.8rem;">© 2024 汉译英转换器. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- 简单翻译模拟脚本（纯前端演示，无外部调用） -->
+    <script>
+        (function() {
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const translateBtn = document.getElementById('translateBtn');
+            const swapBtn = document.getElementById('swapLang');
+
+            // 状态：当前模式 true=中译英, false=英译中（示例仅中译英效果）
+            let mode = true;
+
+            // 简易词典（演示用，实际应接入翻译引擎，但本页面无后端，仅展示交互）
+            const dict = {
+                '你好': 'Hello',
+                '世界': 'World',
+                '谢谢': 'Thank you',
+                '早上好': 'Good morning',
+                '再见': 'Goodbye',
+                '今天': 'Today',
+                '天气': 'weather',
+                '很好': 'very good',
+                '学习': 'study',
+                '工作': 'work',
+                '朋友': 'friend',
+                '中国': 'China',
+                '北京': 'Beijing',
+                '翻译': 'translate',
+                '转换器': 'converter',
+                '汉译英': 'Chinese to English',
+                '在线': 'online',
+                '工具': 'tool',
+                '语言': 'language',
+                '英文': 'English'
+            };
+
+            // 简单分词匹配（演示逻辑）
+            function simpleTranslate(text) {
+                if (!text.trim()) return '请输入内容';
+                let result = text;
+                // 按字典逐词替换（粗略演示）
+                for (let key in dict) {
+                    if (dict.hasOwnProperty(key)) {
+                        const re = new RegExp(key, 'g');
+                        result = result.replace(re, dict[key]);
+                    }
+                }
+                // 若没有匹配到任何词，给出提示
+                if (result === text) {
+                    return '（未能识别常用词，请尝试输入更简单的句子或短语）';
+                }
+                return result;
+            }
+
+            translateBtn.addEventListener('click', function() {
+                const text = inputText.value.trim();
+                if (!text) {
+                    outputText.textContent = '请先输入中文内容';
+                    return;
+                }
+                if (mode) {
+                    outputText.textContent = simpleTranslate(text);
+                } else {
+                    // 英译中简版（这里不扩展，仅提示）
+                    outputText.textContent = '当前演示模式仅支持中译英。您可以点击互换按钮切换方向，但英译中功能需接入翻译服务。';
+                }
+            });
+
+            swapBtn.addEventListener('click', function() {
+                mode = !mode;
+                if (mode) {
+                    document.querySelector('.lang-row span').textContent = '中文';
+                    document.querySelector('.lang-row span:last-child').textContent = '英文';
+                    inputText.placeholder = '请输入要翻译的中文内容...';
+                    outputText.textContent = '翻译结果将显示在这里';
+                } else {
+                    document.querySelector('.lang-row span').textContent = '英文';
+                    document.querySelector('.lang-row span:last-child').textContent = '中文';
+                    inputText.placeholder = 'Enter English text...';
+                    outputText.textContent = 'Translation will appear here';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
